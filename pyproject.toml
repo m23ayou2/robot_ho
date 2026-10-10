@@ -10,6 +10,7 @@ dependencies = [
     "opencv-python>=5.0.0.93",
     "pandas>=3.0.6",
     "pyarrow>=26.0.0",
+    "scipy>=1.17.1",
     "torch>=2.14.1",
     "torch-vision>=0.1.6.dev0",
 ]
