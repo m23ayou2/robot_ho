@@ -94,7 +94,7 @@ class PolicyConfig:
     slot_seed: int = 0                   # slot-init seed; reuse the same one on the robot
     n_hist: int = 2                      # slot frames per observation (t - gap, t)
     hist_gap: int = 1                    # in slot frames (10 fps -> 0.1 s)
-    use_slots: bool = False               # ablation switches
+    use_slots: bool = True               # ablation switches
     use_geometry: bool = True            # centroid / spread / area / velocity of each slot mask
     use_state: bool = True               # proprioception token
     use_prev_action: bool = True         # last-command token
