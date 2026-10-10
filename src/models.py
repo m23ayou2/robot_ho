@@ -184,3 +184,23 @@ class SlotContrastModel(nn.Module):
         r_last, m_last = self.decoder(last)
         r0 = self.decoder(s0)[0] if train_first else None
         return {"s0": s0, "r0": r0, "prev": prev, "last": last, "r_last": r_last, "masks_last": m_last}
+
+class DinoEncoder(nn.Module):
+    """Frozen DINOv2: uint8 RGB frames -> normalized patch tokens [B, N, D]."""
+
+    def __init__(self, name):
+        super().__init__()
+        self.model = torch.hub.load("facebookresearch/dinov2", name)
+        self.model.requires_grad_(False).eval()
+        self.dim = self.model.embed_dim
+        self.register_buffer("mean", torch.tensor([0.485, 0.456, 0.406]).view(1, 3, 1, 1))
+        self.register_buffer("std", torch.tensor([0.229, 0.224, 0.225]).view(1, 3, 1, 1))
+
+    def train(self, mode=True):  # always frozen
+        return super().train(False)
+
+    @torch.no_grad()
+    def forward(self, frames_uint8):
+        x = frames_uint8.permute(0, 3, 1, 2).float().div_(255.0)
+        x = (x - self.mean) / self.std
+        return self.model.forward_features(x)["x_norm_patchtokens"]
