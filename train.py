@@ -19,7 +19,6 @@ import torch.nn.functional as F
 from huggingface_hub import snapshot_download
 from torch.utils.data import DataLoader, Dataset
 
-from src.models import ClipDataset
 from src.models import SlotInit
 from src.models import SlotAttention
 from src.models import MLPDecoder
@@ -28,6 +27,8 @@ from src.models import SlotContrastModel
 from src.models import DinoEncoder
 
 from src.config import Config
+
+from src.dataset import ClipDataset
 
 def seed_everything(seed):
     random.seed(seed)
